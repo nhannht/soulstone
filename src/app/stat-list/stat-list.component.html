@@ -1,0 +1,34 @@
+<div>
+
+  <div class="flex justify-center p-4" >
+    <input
+      placeholder="Search plugin, example : Historica"
+      type="text"
+      class=" border-2 w-[50vw] focus:border-red-200 rounded p-1.5 text-gray-500 outline-none shadow-sm"
+
+      (keyup)="onInputKeyUp($event)"/>
+
+
+  </div>
+
+  <ul class="flex
+  flex-col fixed
+   w-1/2 h-[80vh] top-[10vh]
+   left-0 overflow-auto px-4
+
+">
+    <li
+      class="transition ease-in-out duration-300 cursor-pointer hover:bg-red-200 rounded "
+
+      *ngFor="let pluginName of Object.keys(pluginsToDisplay)"
+
+      (click)="onClick(pluginName)">
+      {{ pluginName }}
+    </li>
+  </ul>
+
+  <div class=" overflow-auto fixed left-1/2 h-[80vh] w-1/2 top-[10vh] px-4">
+    <app-plugin-details [pluginStats]="currentPlugin"/>
+
+  </div>
+</div>

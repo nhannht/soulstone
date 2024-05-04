@@ -1,0 +1,12 @@
+<div *ngIf="pluginStats">
+  <div>Downloads: {{ pluginStats.downloads }}</div>
+  <div>Updated: {{ pluginStats.updated }}</div>
+  <div>
+    Version:
+    <ul>
+      <li *ngFor="let version of Object.keys(pluginStats.versionsSorted)">
+        {{ version }} : {{ pluginStats.versionsSorted[version] }}
+      </li>
+    </ul>
+  </div>
+</div>
