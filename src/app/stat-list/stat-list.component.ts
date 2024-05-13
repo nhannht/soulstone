@@ -1,8 +1,8 @@
-import {HttpClient} from "@angular/common/http";
 import {Component, OnInit} from "@angular/core";
 import {NgFor, NgIf} from "@angular/common";
-import {PluginDetailsComponent} from "./plugin-stats/plugin-details.component";
+import {PluginDetailsComponent} from "../plugin-stats/plugin-details.component";
 import {RouterLink, RouterOutlet} from "@angular/router";
+import {AppDataService} from "../../service/app-data.service";
 
 // type Plugin = {
 //   [key: string]: [value: string]
@@ -27,90 +27,95 @@ import {RouterLink, RouterOutlet} from "@angular/router";
 
 })
 export class StatListComponent implements OnInit {
-  public allPluginStats = {};
-  public structuredPluginsStats: any = {};
-  public currentPlugin: any;
-  public currentSearchString: string = "";
-  public pluginsToDisplay: any = {}
+  get appDataService(): AppDataService {
+    return this._appDataService;
+  }
 
-  constructor(public httpClient: HttpClient) {
+  get allPlugin(): any {
+    return this._allPlugin;
+  }
 
+  set allPlugin(value: any) {
+    this._allPlugin = value;
+  }
+
+  get searchString(): string {
+    return this._searchString;
+  }
+
+  set searchString(value: string) {
+    this._searchString = value;
+  }
+
+  get pluginsToDisplay(): any {
+    return this._pluginsToDisplay;
+  }
+
+  set pluginsToDisplay(value: any) {
+    this._pluginsToDisplay = value;
   }
 
 
-  getPluginStats(pluginName: string) {
-    //@ts-ignore
-    let pluginStats = this.allPluginStats[pluginName];
-    const {"downloads": downloads, "updated": updated, ...versions} = pluginStats
-    const versionNameListSorted = this.sortVersion(Object.keys(versions))
-    let versionsSorted: any = {}
-    versionNameListSorted.forEach(ver => versionsSorted[ver] = versions[ver])
-    return {
-      downloads,
-      updated,
-      versionsSorted
-    }
+  private _pluginsToDisplay: any = {}
 
-  }
+  private _searchString: string = ""
 
-  onClick(pluginName: string) {
-    this.currentPlugin = this.structuredPluginsStats[pluginName]
+  private _allPlugin: any = []
 
+  constructor(private _appDataService: AppDataService
+              ) {
 
-  }
-
-  protected readonly Object = Object;
-
-  sortVersion(versionsNameList: string[]) {
-    return versionsNameList.map(a => a.split('.').map(n => +n + 100000).join('.')).sort()
-      .map(a => a.split('.').map(n => +n - 100000).join('.'));
   }
 
   ngOnInit(): void {
-    this.httpClient.get("https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugin-stats.json")
-      .subscribe({
+    if (sessionStorage.getItem("all-plugin-session-storage") === null) {
+      this.appDataService.fetchPluginStatsAndConvertedToStructuredData().subscribe({
         next: data => {
-          this.allPluginStats = data
-          const pluginsNameList = Object.keys(this.allPluginStats)
-          pluginsNameList.forEach(plugin => {
-            this.structuredPluginsStats[plugin] = this.getPluginStats(plugin)
 
-          })
-          this.pluginsToDisplay = Object.assign({}, this.structuredPluginsStats)
+          this.allPlugin = data
+          sessionStorage.setItem("all-plugin-session-storage",JSON.stringify(data))
+
         },
-        error: e => console.log(e),
+        error: e => console.log(e)
       })
+    } else {
+      this.allPlugin = JSON.parse( sessionStorage.getItem("all-plugin-session-storage")!)
+    }
 
 
   }
 
   onInputKeyUp($event: any) {
     if ($event.target) {
-      this.currentSearchString = $event.target.value;
+      this.searchString = $event.target.value;
 
     }
 
-    if (this.currentSearchString.trim() === "") {
-      this.pluginsToDisplay = Object.assign({}, this.structuredPluginsStats)
+    if (this.searchString.trim() === "") {
+      this._pluginsToDisplay = Object.assign({}, this.allPlugin)
 
     } else {
-      const pluginsName = Object.keys(this.structuredPluginsStats)
+      const pluginsName = Object.keys(this.allPlugin)
       const pluginsMatch: string[] = []
       pluginsName.forEach(name => {
         // console.log(name)
-        if (name.search(this.currentSearchString.toLowerCase()) !== -1) {
+        if (name.search(this.searchString.toLowerCase()) !== -1) {
           pluginsMatch.push(name)
         }
       })
 
       pluginsName.forEach(name => {
         if (!pluginsMatch.includes(name)) {
-          delete this.pluginsToDisplay[name]
+          delete this._pluginsToDisplay[name]
         }
       })
     }
 
 
   }
+
+  // For Object.keys() in html template
+  protected readonly Object = Object;
+
 
 }
