@@ -31,7 +31,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           BACKEND_HOST: ${{ secrets.BACKEND_HOST }}
         run: |
-          sh create-env-file.sh
+
+          sh create-env-file
           yarn build
           yarn run wrangler pages deploy
 
