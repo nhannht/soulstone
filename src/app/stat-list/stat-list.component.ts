@@ -60,7 +60,7 @@ export class StatListComponent implements OnInit {
 
   private _searchString: string = ""
 
-  private _allPlugin: any = []
+  private _allPlugin: any[] = []
 
   constructor(private _appDataService: AppDataService
               ) {
