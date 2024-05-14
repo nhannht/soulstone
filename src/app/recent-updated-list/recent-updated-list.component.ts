@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AppDataService} from "../../service/app-data.service";
-import {NgForOf} from "@angular/common";
+import {DatePipe, formatDate, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-recent-updated-list',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    DatePipe
   ],
   templateUrl: './recent-updated-list.component.html',
   styleUrl: './recent-updated-list.component.css'
@@ -75,4 +76,6 @@ export class RecentUpdatedListComponent implements OnInit {
   }
 
 
+  protected readonly Date = Date;
+  protected readonly formatDate = formatDate;
 }

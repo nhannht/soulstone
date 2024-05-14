@@ -1,5 +1,8 @@
 <ul>
-  <li *ngFor="let plugin of top50">
-    {{plugin["name"]}}
+  <li *ngFor="let plugin of top50"
+  class="flex flex-row justify-between"
+  >
+    <div>{{ plugin["name"] }}</div>
+    <div>{{ plugin["statsDetails"]["downloads"] }}</div>
   </li>
 </ul>

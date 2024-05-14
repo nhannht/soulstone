@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+cat > src/environments/environments.ts <<- EOM
+export const environment = {
+  backendHost: "${BACKEND_HOST}",
+
+};
+EOM
+
+

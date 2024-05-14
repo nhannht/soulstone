@@ -55,7 +55,7 @@ export class MostDownloadedListComponent implements OnInit {
   public updateTop50(){
     const temp = structuredClone(this.allPlugins)
     temp.sort((a,b)=>{
-      return a["statsDetails"]["downloads"] - b["statsDetails"]["downloads"];
+      return b["statsDetails"]["downloads"] - a["statsDetails"]["downloads"];
     })
     this.top50 = temp.slice(0,50)
 

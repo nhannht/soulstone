@@ -22,11 +22,11 @@ import {AppDataService} from "../../service/app-data.service";
     RouterOutlet,
     RouterLink
   ],
-  templateUrl: './stat-list.component.html',
-  styleUrl: './stat-list.component.css',
+  templateUrl: './plugin-list.component.html',
+  styleUrl: './plugin-list.component.css',
 
 })
-export class StatListComponent implements OnInit {
+export class PluginListComponent implements OnInit {
   get appDataService(): AppDataService {
     return this._appDataService;
   }
@@ -61,6 +61,8 @@ export class StatListComponent implements OnInit {
   private _searchString: string = ""
 
   private _allPlugin: any[] = []
+
+
 
   constructor(private _appDataService: AppDataService
               ) {

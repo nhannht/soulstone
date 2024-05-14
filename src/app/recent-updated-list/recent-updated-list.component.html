@@ -1,4 +1,9 @@
 <ul>
   <li *ngFor="let plugin of last30day"
-  >{{plugin["name"]}}</li>
+      class="flex flex-row justify-around"
+  >
+    <div>{{ plugin["name"] }}</div>
+    <div>{{  plugin["statsDetails"]["updated"] | date: 'short' }}</div>
+
+  </li>
 </ul>
