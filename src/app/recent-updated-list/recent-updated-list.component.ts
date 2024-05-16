@@ -73,7 +73,7 @@ export class RecentUpdatedListComponent implements OnInit {
     // @ts-ignore
     this.last30day.sort((a: Object, b: Object) => {
       // @ts-ignore
-      return a["statsDetails"]["updated"] - b["statsDetails"]["updated"]
+      return b["statsDetails"]["updated"] - a["statsDetails"]["updated"]
     })
 
   }

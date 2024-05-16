@@ -3,17 +3,12 @@
     <ul class="text-center p-3 textrose-700">{{ "Plugins updated in last 30 days" | uppercase }}</ul>
     <ul>
       <li
-
-
+        routerLink="/plugin-details/{{ plugin['pluginId'] }}"
+        class="cursor-pointer flex flex-row justify-between hover:bg-rose-700 hover:text-white p-1 rounded"
         *ngFor="let plugin of last30day"
       >
-        <a
-          class="flex flex-row justify-between hover:bg-rose-700 hover:text-white p-1 rounded"
-
-          routerLink="/plugin-details/{{ plugin['pluginId'] }}">
-          <div>{{ plugin["name"] }}</div>
-          <div>{{ plugin["statsDetails"]["updated"] | date: 'short' }}</div>
-        </a>
+        <div>{{ plugin["name"] }}</div>
+        <div>{{ plugin["statsDetails"]["updated"] | date: 'short' }}</div>
 
       </li>
     </ul>
