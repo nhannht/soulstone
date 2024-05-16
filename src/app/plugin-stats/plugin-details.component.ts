@@ -3,6 +3,7 @@ import {DatePipe, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {ActivatedRoute, Params} from "@angular/router";
 import {AppDataService} from "../../service/app-data.service";
 import {Plugin} from "../../types";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-plugin-details',
@@ -11,7 +12,8 @@ import {Plugin} from "../../types";
     NgIf,
     NgForOf,
     DatePipe,
-    UpperCasePipe
+    UpperCasePipe,
+    NgxChartsModule
   ],
   templateUrl: './plugin-details.component.html',
   styleUrl: './plugin-details.component.css'
@@ -38,6 +40,8 @@ export class PluginDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+
     this.route.params.subscribe(
       (p: Params) => {
         this.pluginId = p["pluginId"]
@@ -53,6 +57,13 @@ export class PluginDetailsComponent implements OnInit {
                   // @ts-ignore
                   .localeCompare(bVersion.replace(/\d+/g, n => +n + 100000))
               })
+              this.graphData = this.plugin?.pluginVersionList.map(v => {
+                const name = v["versionName"];
+                const value = v["downloadNumbers"];
+                return {name, value}
+              });
+
+
             },
             error: err => console.log(err),
           }
@@ -60,7 +71,6 @@ export class PluginDetailsComponent implements OnInit {
 
       }
     )
-
 
   }
 
@@ -70,4 +80,21 @@ export class PluginDetailsComponent implements OnInit {
 
 
   protected readonly Object = Object;
+  protected view: [number, number] = [700, 400];
+
+
+  graphData: any[] = [];
+  gradient: boolean = false;
+  showXAxis: any = true;
+  showYAxis: any = true;
+  showLegend: boolean = true;
+  showXAxisLabel: boolean = true;
+  showYAxisLabel: boolean = true;
+  xAxisLabel: string = "Version";
+  yAxisLabel: string = "number of downloads";
+
+  onBarChartSelect($event: any) {
+    console.log($event)
+
+  }
 }

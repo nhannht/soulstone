@@ -31,5 +31,25 @@
 
 
     </div>
+    <div
+
+      *ngIf="graphData"
+    class="w-[80vw] h-[50vh] "
+    >
+      <ngx-charts-bar-vertical
+        [results]="graphData"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        (select)="onBarChartSelect($event)">
+      </ngx-charts-bar-vertical>
+    </div>
   </div>
+
+
 </div>

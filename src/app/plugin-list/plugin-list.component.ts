@@ -111,15 +111,15 @@ export class PluginListComponent implements OnInit {
     }
 
     if (this.searchString.trim() === "") {
-      this._pluginsToDisplay = Object.assign({}, this.allPlugin)
+      this.pluginsToDisplay = structuredClone(this.allPlugin)
 
     } else {
       const pluginsName = this.allPlugin.map(p => p["name"])
       // console.log(pluginsName)
       const pluginsMatch: string[] = []
-      pluginsName.forEach(name => {
+      pluginsName.forEach((name:string) => {
         // console.log(name)
-        if (name.search(this.searchString.toLowerCase()) !== -1) {
+        if (name.toLowerCase().search(this.searchString.toLowerCase()) !== -1) {
           pluginsMatch.push(name)
         }
       })
