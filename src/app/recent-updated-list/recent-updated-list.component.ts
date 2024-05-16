@@ -1,13 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {AppDataService} from "../../service/app-data.service";
-import {DatePipe, formatDate, NgForOf} from "@angular/common";
+import {DatePipe, formatDate, NgForOf, UpperCasePipe} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-recent-updated-list',
   standalone: true,
   imports: [
     NgForOf,
-    DatePipe
+    DatePipe,
+    UpperCasePipe,
+    RouterLink
   ],
   templateUrl: './recent-updated-list.component.html',
   styleUrl: './recent-updated-list.component.css'

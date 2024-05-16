@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {PluginListComponent} from "./stat-list/plugin-list.component";
+import {PluginListComponent} from "./plugin-list/plugin-list.component";
 import {NavComponent} from "./nav/nav.component";
 import {AppDataService} from "../service/app-data.service";
 

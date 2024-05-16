@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, HostListener, OnInit} from "@angular/core";
 import {NgFor, NgIf} from "@angular/common";
 import {PluginDetailsComponent} from "../plugin-stats/plugin-details.component";
 import {RouterLink, RouterOutlet} from "@angular/router";
@@ -13,7 +13,7 @@ import {AppDataService} from "../../service/app-data.service";
 // }
 
 @Component({
-  selector: 'app-stat-list',
+  selector: 'app-plugin-list',
   standalone: true,
   imports: [
     NgFor,
@@ -31,11 +31,11 @@ export class PluginListComponent implements OnInit {
     return this._appDataService;
   }
 
-  get allPlugin(): any {
+  get allPlugin(): any[] {
     return this._allPlugin;
   }
 
-  set allPlugin(value: any) {
+  set allPlugin(value: any[]) {
     this._allPlugin = value;
   }
 
@@ -56,34 +56,51 @@ export class PluginListComponent implements OnInit {
   }
 
 
-  private _pluginsToDisplay: any = {}
+  private _pluginsToDisplay: any[] = [];
 
   private _searchString: string = ""
 
   private _allPlugin: any[] = []
 
 
-
   constructor(private _appDataService: AppDataService
-              ) {
+  ) {
 
   }
 
+  @HostListener("window:unload", ['$event'])
+  unloadHandler() {
+    localStorage.setItem("all-plugin-local-storage", JSON.stringify(this.allPlugin))
+  }
+
+  @HostListener("window:reload", ['$event'])
+  reloadHandler() {
+    localStorage.setItem("all-plugin-local-storage", JSON.stringify(this.allPlugin))
+  }
+
+
   ngOnInit(): void {
+
     if (sessionStorage.getItem("all-plugin-session-storage") === null) {
+      if (localStorage.getItem("all-plugin-local-storage") !== null) {
+        this.allPlugin = JSON.parse(localStorage.getItem("all-plugin-local-storage")!)
+      }
       this.appDataService.fetchPluginStatsAndConvertedToStructuredData().subscribe({
         next: data => {
 
+          // @ts-ignore
           this.allPlugin = data
-          sessionStorage.setItem("all-plugin-session-storage",JSON.stringify(data))
+          this.pluginsToDisplay = data
+          sessionStorage.setItem("all-plugin-session-storage", JSON.stringify(data))
+
 
         },
         error: e => console.log(e)
       })
     } else {
-      this.allPlugin = JSON.parse( sessionStorage.getItem("all-plugin-session-storage")!)
+      this.allPlugin = JSON.parse(sessionStorage.getItem("all-plugin-session-storage")!)
+      this.pluginsToDisplay = structuredClone(this.allPlugin)
     }
-
 
   }
 
@@ -97,7 +114,8 @@ export class PluginListComponent implements OnInit {
       this._pluginsToDisplay = Object.assign({}, this.allPlugin)
 
     } else {
-      const pluginsName = Object.keys(this.allPlugin)
+      const pluginsName = this.allPlugin.map(p => p["name"])
+      // console.log(pluginsName)
       const pluginsMatch: string[] = []
       pluginsName.forEach(name => {
         // console.log(name)
@@ -105,12 +123,14 @@ export class PluginListComponent implements OnInit {
           pluginsMatch.push(name)
         }
       })
-
-      pluginsName.forEach(name => {
-        if (!pluginsMatch.includes(name)) {
-          delete this._pluginsToDisplay[name]
+      // console.log(pluginsMatch)
+      this.pluginsToDisplay = [];
+      this.allPlugin.forEach(plugin => {
+        if (pluginsMatch.includes(plugin["name"])) {
+          this.pluginsToDisplay.push(plugin)
         }
       })
+
     }
 
 

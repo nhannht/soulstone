@@ -1,8 +1,17 @@
-<ul>
-  <li *ngFor="let plugin of top50"
-  class="flex flex-row justify-between"
-  >
-    <div>{{ plugin["name"] }}</div>
-    <div>{{ plugin["statsDetails"]["downloads"] }}</div>
-  </li>
-</ul>
+<div class="flex flex-row justify-center text-center">
+  <div class="flex flex-col">
+    <div class="p-3">{{ "Top 100 downloaded plugin of all times" | uppercase }}</div>
+    <ul>
+      <li *ngFor="let plugin of top50"
+      >
+        <a
+          routerLink="/plugin-details/{{ plugin['pluginId'] }}"
+          class="hover:bg-rose-700 hover:text-white p-1 flex flex-row justify-between rounded"
+        >
+          <div>{{ plugin["name"] }}</div>
+          <div>{{ plugin["statsDetails"]["downloads"] }}</div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

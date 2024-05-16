@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {AppDataService} from "../../service/app-data.service";
-import {NgForOf} from "@angular/common";
+import {NgForOf, UpperCasePipe} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-most-downloaded-list',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    UpperCasePipe,
+    RouterLink
   ],
   templateUrl: './most-downloaded-list.component.html',
   styleUrl: './most-downloaded-list.component.css'

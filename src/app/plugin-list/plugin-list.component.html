@@ -19,8 +19,8 @@
 
 "
 
-      *ngFor="let pluginName of this.allPlugin">
-      <a [routerLink]="['/plugin-details',pluginName['plugin-id']]">
+      *ngFor="let pluginName of this.pluginsToDisplay">
+      <a [routerLink]="['/plugin-details',pluginName['pluginId']]">
 
         {{ pluginName['name'] }}
       </a>

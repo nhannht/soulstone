@@ -18,6 +18,10 @@ export class AppDataService {
 
   }
 
+  public getPluginDetailFromBackEnd(pluginId:string){
+    return this._httpClient.get(environment.backendHost + "/api/plugin/" + pluginId )
+  }
+
 
   // sortVersion(versionsNameList: string[]) {
   //   return versionsNameList.map(a => a.split('.').map(n => +n + 100000).join('.')).sort()

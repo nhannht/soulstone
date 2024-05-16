@@ -1,1 +1,35 @@
-<div>{{pluginStat2}}</div>
+<div class="flex flex-row justify-center text-center"
+     *ngIf="plugin">
+  <div class="flex flex-col justify-center">
+    <div
+      class="p-3 text-rose-700 "
+    >{{ plugin.name|uppercase }}
+    </div>
+
+    <div class="p-3 underline text-gray-500">
+      <a href="https://github.com/{{plugin.repo.owner}}/{{plugin.repo.repoName}}">
+        {{ plugin.repo.repoName }}
+      </a>
+    </div>
+
+    <div class="text-gray-500 p-3">Latest updated:  {{ plugin.statsDetails.updated | date: "short" }}</div>
+
+    <div>
+      <details>
+        <summary>Downloads in each version</summary>
+        <ul>
+          <li
+            class="flex flex-row justify-between"
+            *ngFor="let version of plugin.pluginVersionList"
+          >
+            <div>{{ version.versionName }}</div>
+            <div>{{ version.downloadNumbers }}</div>
+
+          </li>
+        </ul>
+      </details>
+
+
+    </div>
+  </div>
+</div>
